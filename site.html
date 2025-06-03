@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<title>CMD</title>
+<style>
+  body {
+    background-color: black;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    white-space: pre;
+    padding: 20px;
+    font-size: 16px;
+  }
+  #container {
+    max-width: 800px;
+    margin: auto;
+  }
+  @keyframes blink {
+    0%, 50%, 100% { opacity: 1; }
+    25%, 75% { opacity: 0; }
+  }
+  .blinking {
+    animation: blink 0.3s linear infinite;
+  }
+</style>
+</head>
+<body>
+<div id="container"></div>
+
+<script>
+const container = document.getElementById('container');
+
+const fakeMessages = [
+  "Iniciando conexão com o sistema...",
+  "Acessando dados do computador...",
+  "Copiando... 0%",
+  "Copiando... 25%",
+  "Copiando... 50%",
+  "Copiando... 75%",
+  "Copiando... 100%",
+  "Finalizando operação..."
+];
+
+const skull = `
+███████▀▀▀░░░░░░░▀▀▀███████
+████▀░░░░░░░░░░░░░░░░░▀████
+███│░░░░░░░░░░░░░░░░░░░│███
+██▌│░░░░░░░░░░░░░░░░░░░│▐██
+██░└┐░░░░░░░░░░░░░░░░░┌┘░██
+██░░└┐░░░░░░░░░░░░░░░┌┘░░██
+██░░┌┘▄▄▄▄▄░░░░░▄▄▄▄▄└┐░░██
+██▌░│██████▌░░░▐██████│░▐██
+███░│▐███▀▀░░▄░░▀▀███▌│░███
+██▀─┘░░░░░░░▐█▌░░░░░░░└─▀██
+██▄░░░▄▄▄▓░░▀█▀░░▓▄▄▄░░░▄██
+████▄─┘██▌░░░░░░░▐██└─▄████
+█████░░▐█─┬┬┬┬┬┬┬─█▌░░█████
+████▌░░░▀┬┼┼┼┼┼┼┼┬▀░░░▐████
+█████▄░░░└┴┴┴┴┴┴┴┘░░░▄█████
+███████▄░░░░░░░░░░░▄███████
+██████████▄▄▄▄▄▄▄██████████
+███████████████████████████
+`;
+
+const thankYou = "\n\nObrigado!";
+
+let step = 0;
+
+function typeMessage(message, callback) {
+  let i = 0;
+  const interval = setInterval(() => {
+    container.textContent += message[i];
+    i++;
+    if (i === message.length) {
+      clearInterval(interval);
+      container.textContent += "\n";
+      setTimeout(callback, 400);
+    }
+  }, 25);
+}
+
+function startFakeHacking() {
+  if (step < fakeMessages.length) {
+    typeMessage(fakeMessages[step], () => {
+      step++;
+      startFakeHacking();
+    });
+  } else {
+    setTimeout(() => {
+      container.textContent = skull + thankYou;
+      container.classList.add('blinking');
+      setTimeout(() => {
+        container.classList.remove('blinking');
+        setTimeout(() => {
+          window.close();
+        }, 2000);
+      }, 3000);
+    }, 400);
+  }
+}
+
+startFakeHacking();
+</script>
+</body>
+</html>
